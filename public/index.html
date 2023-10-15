@@ -168,32 +168,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.0/axios.min.js" integrity="sha512-aoTNnqZcT8B4AmeCFmiSnDlc4Nj/KPaZyB5G7JnOnUEkdNpCZs1LCankiYi01sLTyWy+m2P+W4XM+BuQ3Q4/Dg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     "<script type="text/javascript"src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>"
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js">
-        
-    </script>    
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"> </script>   
+    
     <script>
-        var dataSource = {
+
+var dataSource = {
              datasets: [
               {
-                 data:[25,150,75,35,45,25,25,75,25],
-                 backgroundColor: [
-                 '#ffcd56','#ff6384','#36a2eb','#fd6b19', '#f38b4a', '#56d798', '#ff8397','#6970d5','#eb3639'
-                 ],
+                 data:[],
+                 backgroundColor: []
               }
             ],
-            labels: [
-               'Eat out',
-               'Rent',
-               'Grocery',
-               'Medical and Healthcare',
-               'Transportation',
-               'Utilities',
-               'Insurance',
-               'Childcare',
-               'Clothing',
-
-            ]
+            labels: []
         };
         
                function createChart() {
@@ -212,23 +198,18 @@
 
         }  
         function getBudget() {
-	      axios.get(`http://localhost:5500`)
-            // axios.get('/budget')
-	        .then (function (res) {
-                console.log(`http://localhost:5500`);
+	      axios.get(`http://localhost:3000/items`)
+           	  .then (function (res) {
+                console.log(res.data);
                 
-	            for (var i=0; i < res.data.myBudget.length; i++)
-                 {
-                  dataSource.datasets[0].data[i] = res.data.myBudget[i].budget;
-                  dataSource.labels[i] = res.data.myBudget[i].title;
-                }
+	                dataSource.labels = res.data.map(item => item.title);
+                    dataSource.datasets[0].data = res.data.map(item => item.budget);
+                    dataSource.datasets[0].backgroundColor = res.data.map(item => item.color);
                 createChart();
              });
         }
         getBudget();
-        createChart();    
-        
-       
     </script>
+
 </body>
 </html>
